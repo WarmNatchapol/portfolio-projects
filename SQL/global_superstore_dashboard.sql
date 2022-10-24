@@ -14,15 +14,26 @@ CREATE TABLE products(
 );
 
 INSERT INTO products
-SELECT new_product_id, product_name, category, sub_category
+SELECT 
+	new_product_id, 
+	product_name, 
+	category, sub_category
 FROM new_global_store;
 
 WITH cte AS(
 	SELECT
 		*,
 		ROW_NUMBER() OVER(
-			PARTITION BY product_id, product_name, category, sub_category
-			ORDER BY product_id, product_name, category, sub_category
+			PARTITION BY 
+				product_id, 
+				product_name, 
+				category, 
+				sub_category
+			ORDER BY 
+				product_id, 
+				product_name, 
+				category, 
+				sub_category
 		) AS row_num
 	FROM products
 )
@@ -39,15 +50,24 @@ CREATE TABLE customers(
 );
 
 INSERT INTO customers
-SELECT customer_id, customer_name, segment 
+SELECT 
+	customer_id, 
+	customer_name, 
+	segment 
 FROM new_global_store;
 
 WITH cte AS(
 	SELECT
 		*,
 		ROW_NUMBER() OVER(
-			PARTITION BY customer_id, customer_name, segment 
-			ORDER BY customer_id, customer_name, segment 
+			PARTITION BY 
+				customer_id, 
+				customer_name, 
+				segment 
+			ORDER BY 
+				customer_id, 
+				customer_name, 
+				segment 
 		) AS row_num
 	FROM customers
 )
@@ -65,15 +85,27 @@ CREATE TABLE customers_address(
 );
 
 INSERT INTO customers_address (customer_id, country, state, city)
-SELECT customer_id, country, state, city 
+SELECT 
+	customer_id, 
+	country, 
+	state, 
+	city 
 FROM new_global_store;
 
 WITH cte AS(
 	SELECT
 		*,
 		ROW_NUMBER() OVER(
-			PARTITION BY customer_id, country, state, city 
-			ORDER BY customer_id, country, state, city
+			PARTITION BY 
+				customer_id, 
+				country, 
+				state, 
+				city 
+			ORDER BY 
+				customer_id, 
+				country, 
+				state, 
+				city
 		) AS row_num
 	FROM customers_address
 )
@@ -101,15 +133,60 @@ CREATE TABLE transactions(
 );
 
 INSERT INTO transactions 
-SELECT row_id, order_id, CONVERT(date, order_date, 105), CONVERT(date, ship_date, 105), ship_mode, customer_id, market, region, new_product_id, sales, quantity, discount, profit, shipping_cost, order_priority
+SELECT 
+	row_id, 
+	order_id, 
+	CONVERT(date, order_date, 105), 
+	CONVERT(date, ship_date, 105), 
+	ship_mode, 
+	customer_id, 
+	market, 
+	region, 
+	new_product_id, 
+	sales, 
+	quantity, 
+	discount, 
+	profit, 
+	shipping_cost, 
+	order_priority
 FROM new_global_store;
 
 WITH cte AS(
 	SELECT
 		*,
 		ROW_NUMBER() OVER(
-			PARTITION BY row_id, order_id, order_date, ship_date, ship_mode, customer_id, market, region, product_id, sales, quantity, discount, profit, shipping_cost, order_priority
-			ORDER BY row_id, order_id, order_date, ship_date, ship_mode, customer_id, market, region, product_id, sales, quantity, discount, profit, shipping_cost, order_priority
+			PARTITION BY 
+				row_id, 
+				order_id, 
+				order_date, 
+				ship_date, 
+				ship_mode, 
+				customer_id, 
+				market, 
+				region, 
+				product_id, 
+				sales, 
+				quantity, 
+				discount, 
+				profit, 
+				shipping_cost, 
+				order_priority
+			ORDER BY 
+				row_id, 
+				order_id, 
+				order_date, 
+				ship_date, 
+				ship_mode, 
+				customer_id, 
+				market, 
+				region, 
+				product_id, 
+				sales, 
+				quantity, 
+				discount, 
+				profit, 
+				shipping_cost, 
+				order_priority
 		) AS row_num
 	FROM transactions
 )
